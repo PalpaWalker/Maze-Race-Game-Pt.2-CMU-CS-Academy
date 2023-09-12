@@ -1,0 +1,343 @@
+app.background= fill='black'
+
+startlabel = Rect(0,0,400,400)
+startlabel1 = Label('Defeat The Level To Complete The Game',200,150,bold=True,fill='white',size=15)
+startlabel2 = Label('press space to start the game',200,180,bold=True,fill='white',size=15)
+startlabel3 = Label('Welcome To The Maze Runner Game Verison 2',200,120,bold=True,fill='white',size=15)
+
+music = Sound('http://free-loops.com/data/mp3/e0/12/bdda9e6251e7c3fd4b0197392e84.mp3')
+
+
+walls= Group(
+Line(60,0,400,0,fill='purple',lineWidth=20),
+Line(400,0,400,400,fill='purple',lineWidth=20),
+Line(400,400,0,400,fill='purple',lineWidth=20),
+Line(0,400,0,0,fill='purple',lineWidth=20),
+Line(160,120,160,200,fill='purple',lineWidth=10),
+Line(155,120,245,120,fill='purple',lineWidth=10),
+Line(240,120,240,200,fill='purple',lineWidth=10),
+Line(120,0,120,80,fill='purple',lineWidth=10),
+Line(280,0,280,80,fill='purple',lineWidth=10),
+Line(120,400,120,320,fill='purple',lineWidth=10),
+Line(280,400,280,320,fill='purple',lineWidth=10),
+Line(160,50,240,50,fill='purple',lineWidth=10),
+Line(160,350,240,350,fill='purple',lineWidth=10),
+Line(80,120,120,120,fill='purple',lineWidth=10),
+Line(80,200,120,200,fill='purple',lineWidth=10),
+Line(320,120,280,120,fill='purple',lineWidth=10),
+Line(320,200,280,200,fill='purple',lineWidth=10),
+Line(40,80,40,240,fill='purple',lineWidth=10),
+Line(360,80,360,240,fill='purple',lineWidth=10),
+Line(0,320,60,320,fill='purple',lineWidth=10),
+Line(400,320,340,320,fill='purple',lineWidth=10),
+)
+walls.visible=False
+
+player = Rect(30,0,22,22,fill='red',border='blue')
+player.score = Label(0,41,10,fill='white',bold=True)
+
+player.visible=False
+player.score.visible=False
+
+wincoin = Circle(200,160,15,fill='yellow',border='black')
+wincoinlabel = Label('win',200,160,bold=True)
+checkpoint1 = Circle(360,40,15,fill='yellow',border='black')
+checkpoint2 = Circle(360,360,15,fill='yellow',border='black')
+checkpoint3 = Circle(40,360,15,fill='yellow',border='black')
+
+wincoin.visible=False
+wincoinlabel.visible=False
+checkpoint1.visible=False
+checkpoint2.visible=False
+checkpoint3.visible=False
+
+
+winScreen = Rect(0,0,400,400,visible=False)
+winScreen1 = Label('Congradulations! You have defeated the level and completed the game',200,150,size=11,bold=True,visible=False,fill='white')
+winScreen2 = Label('Thank you for playing',200,180,fill='white',bold=True,size=20,visible=False)
+
+loseScreen = Label('You Lost!',200,170,fill='white',bold=True,visible=False,size=20)
+loseScreen1 = Label('Please play again',200,200,fill='white',bold=True,visible=False,size=20)
+
+checkpoint = Label(0,200,230,fill='white',bold=True,visible=False,size=20)
+checkpoints2 = Label('You collected',110,230,bold=True,fill='white',size=20,visible=False)
+checkpoints3 = Label('checkpoint points',305,230,bold=True,fill='white',size=20,visible=False)
+
+badguy1 = Group(
+Rect(180,70,50,30,fill='red'),
+Circle(190,80,8,fill='black',border='white',borderWidth=5),
+Circle(220,80,8,fill='black',border='white',borderWidth=5),
+)
+badguy1.visible=False
+
+badguy2 = Group(
+Rect(60,140,50,30,fill='pink'),
+Circle(70,150,8,fill='black',border='white',borderWidth=5),
+Circle(100,150,8,fill='black',border='white',borderWidth=5),
+)
+badguy2.visible=False
+
+badguy3 = Group(
+Rect(280,140,50,30,fill='pink'),
+Circle(290,150,8,fill='black',border='white',borderWidth=5),
+Circle(320,150,8,fill='black',border='white',borderWidth=5),
+)
+badguy3.visible=False
+
+badguy4 = Group(
+Rect(260,240,50,30,fill='lightSkyBlue'),
+Circle(270,250,8,fill='black',border='white',borderWidth=5),
+Circle(300,250,8,fill='black',border='white',borderWidth=5),
+)
+badguy4.visible=False
+
+badguy5 = Group(
+Rect(100,240,50,30,fill='lightSkyBlue'),
+Circle(110,250,8,fill='black',border='white',borderWidth=5),
+Circle(140,250,8,fill='black',border='white',borderWidth=5),
+)
+badguy5.visible=False
+
+badguy6 = Group(
+Rect(180,270,50,30,fill='lightSkyBlue'),
+Circle(190,280,8,fill='black',border='white',borderWidth=5),
+Circle(220,280,8,fill='black',border='white',borderWidth=5),
+)
+badguy6.visible=False
+
+
+badguy1.dx = 2
+badguy2.dx = 2
+badguy3.dx = 2
+badguy4.dx = 2
+badguy5.dx = 2
+badguy6.dx = 2
+
+
+
+def onKeyHold(keys):
+        if ('up' in keys):
+            player.centerY -= 4
+        if ('down' in keys):
+            player.centerY += 4
+        if ('left' in  keys):
+            player.centerX -= 4
+        if ('right' in keys):
+            player.centerX += 4
+            
+        
+        player.score.centerX = player.centerX
+        player.score.centerY = player.centerY
+        player.score.value += 1
+        
+        
+        if(player.hitsShape(walls)==True):
+            winScreen.visible=True
+            loseScreen.visible=True
+            loseScreen1.visible=True
+            checkpoint.visible=True
+            checkpoints2.visible=True
+            checkpoints3.visible=True
+            badguy1.visible=False
+            badguy2.visible=False
+            badguy3.visible=False
+            badguy4.visible=False
+            badguy5.visible=False
+            badguy6.visible=False
+            music.pause()
+            app.stop()
+            
+        
+            
+        if(player.hitsShape(badguy1)==True):
+            winScreen.visible=True
+            loseScreen.visible=True
+            loseScreen1.visible=True
+            checkpoint.visible=True
+            checkpoints2.visible=True
+            checkpoints3.visible=True
+            badguy1.visible=False
+            badguy2.visible=False
+            badguy3.visible=False
+            badguy4.visible=False
+            badguy5.visible=False
+            badguy6.visible=False
+            music.pause()
+            app.stop()
+            
+        
+            
+        if(player.hitsShape(badguy2)==True):
+            winScreen.visible=True
+            loseScreen.visible=True
+            loseScreen1.visible=True
+            checkpoint.visible=True
+            checkpoints2.visible=True
+            checkpoints3.visible=True
+            badguy1.visible=False
+            badguy2.visible=False
+            badguy3.visible=False
+            badguy4.visible=False
+            badguy5.visible=False
+            badguy6.visible=False
+            music.pause()
+            app.stop()
+            
+        
+            
+        if(player.hitsShape(badguy3)==True):
+            winScreen.visible=True
+            loseScreen.visible=True
+            loseScreen1.visible=True
+            checkpoint.visible=True
+            checkpoints2.visible=True
+            checkpoints3.visible=True
+            badguy1.visible=False
+            badguy2.visible=False
+            badguy3.visible=False
+            badguy4.visible=False
+            badguy5.visible=False
+            badguy6.visible=False
+            music.pause()
+            app.stop()
+            
+        if(player.hitsShape(badguy4)==True):
+            winScreen.visible=True
+            loseScreen.visible=True
+            loseScreen1.visible=True
+            checkpoint.visible=True
+            checkpoints2.visible=True
+            checkpoints3.visible=True
+            badguy1.visible=False
+            badguy2.visible=False
+            badguy3.visible=False
+            badguy4.visible=False
+            badguy5.visible=False
+            badguy6.visible=False
+            music.pause()
+            app.stop()
+            
+        if(player.hitsShape(badguy5)==True):
+            winScreen.visible=True
+            loseScreen.visible=True
+            loseScreen1.visible=True
+            checkpoint.visible=True
+            checkpoints2.visible=True
+            checkpoints3.visible=True
+            badguy1.visible=False
+            badguy2.visible=False
+            badguy3.visible=False
+            badguy4.visible=False
+            badguy5.visible=False
+            badguy6.visible=False
+            music.pause()
+            app.stop()
+            
+        if(player.hitsShape(badguy6)==True):
+            winScreen.visible=True
+            loseScreen.visible=True
+            loseScreen1.visible=True
+            checkpoint.visible=True
+            checkpoints2.visible=True
+            checkpoints3.visible=True
+            badguy1.visible=False
+            badguy2.visible=False
+            badguy3.visible=False
+            badguy4.visible=False
+            badguy5.visible=False
+            badguy6.visible=False
+            music.pause()
+            app.stop()
+            
+            
+            
+        
+            
+        if(player.hitsShape(checkpoint1)==True):
+            checkpoint.value+=1
+            checkpoint1.visible=False
+            walls.fill='red'
+        
+            
+        if(player.hitsShape(checkpoint2)==True):
+            checkpoint.value+=1
+            checkpoint2.visible=False
+            walls.fill='lightSkyBlue'    
+        
+            
+        if(player.hitsShape(checkpoint3)==True):
+            checkpoint.value+=1
+            checkpoint3.visible=False
+            walls.fill='orange'
+            
+        if(player.hitsShape(wincoin)==True):
+            checkpoint.value+=1
+            wincoin.visible=False
+            winScreen.visible=True
+            winScreen1.visible=True
+            winScreen2.visible=True
+            checkpoint.visible=True
+            checkpoints2.visible=True
+            checkpoints3.visible=True
+            badguy1.visible=False
+            badguy2.visible=False
+            badguy3.visible=False
+            badguy4.visible=False
+            badguy5.visible=False
+            badguy6.visible=False
+            music.pause()
+            app.stop()
+            
+        
+def onKeyPress(key):
+    if(key=='space'):
+        startlabel.visible=False
+        startlabel1.visible=False
+        startlabel2.visible=False
+        startlabel3.visible=False
+        walls.visible=True
+        player.visible=True
+        player.score.visible=True
+        wincoin.visible=True
+        wincoinlabel.visible=True
+        checkpoint1.visible=True
+        checkpoint2.visible=True
+        checkpoint3.visible=True
+        badguy1.visible=True
+        badguy2.visible=True
+        badguy3.visible=True
+        badguy4.visible=True
+        badguy5.visible=True
+        badguy6.visible=True
+        music.play(loop=True)
+
+
+
+        
+def onStep():
+    badguy1.centerY += badguy1.dx
+    if ((badguy1.centerY <= 70) or (badguy1.centerY >= 100)):
+        badguy1.dx *= -1
+        
+    badguy2.centerX += badguy2.dx
+    if ((badguy2.centerX <= 70) or (badguy2.centerX >= 130)):
+        badguy2.dx *= -1
+        
+    badguy3.centerX += badguy3.dx
+    if ((badguy3.centerX <= 270) or (badguy3.centerX >= 330)):
+        badguy3.dx *= -1
+        
+    badguy4.centerY += badguy4.dx
+    if ((badguy4.centerY <= 220) or (badguy4.centerY >= 300)):
+        badguy4.dx *= -1
+        
+    badguy5.centerY += badguy5.dx
+    if ((badguy5.centerY <= 220) or (badguy5.centerY >= 300)):
+        badguy5.dx *= -1
+        
+    badguy6.centerX += badguy6.dx
+    if ((badguy6.centerX <= 35) or (badguy6.centerX >= 370)):
+        badguy6.dx *= -1
+        
+    
+
